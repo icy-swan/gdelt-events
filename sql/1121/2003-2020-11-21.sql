@@ -2,9 +2,7 @@ SELECT
   GLOBALEVENTID,
   MonthYear,
   Actor1CountryCode,
-  Actor1Type1Code,
   Actor2CountryCode,
-  Actor2Type1Code,
   QuadClass,
   EventCode,
   Actor1Code,
@@ -167,7 +165,7 @@ WHERE
       'ZAF',
       'ZMB',
       'VNM',
-      'ROU',
+      'ROM',
       'ZWE'))
   AND GoldsteinScale < 0
 UNION ALL
@@ -175,9 +173,7 @@ SELECT
   GLOBALEVENTID,
   MonthYear,
   Actor2CountryCode AS Actor1CountryCode,
-  Actor2Type1Code AS Actor1Type1Code,
   Actor1CountryCode AS Actor2CountryCode,
-  Actor1Type1Code AS Actor2Type1Code,
   QuadClass,
   EventCode,
   Actor1Code,
@@ -339,6 +335,8 @@ WHERE
       'YEM',
       'ZAF',
       'ZMB',
+      'VNM',
+      'ROM',
       'ZWE'))
   AND GoldsteinScale < 0
 UNION ALL
@@ -346,9 +344,7 @@ SELECT
   GLOBALEVENTID,
   MonthYear,
   Actor1CountryCode,
-  Actor1Type1Code,
   Actor2CountryCode,
-  Actor2Type1Code,
   QuadClass,
   EventCode,
   Actor1Code,
@@ -510,6 +506,8 @@ WHERE
       'YEM',
       'ZAF',
       'ZMB',
+      'VNM',
+      'ROM',
       'ZWE'))
   AND GoldsteinScale < 0
 UNION ALL
@@ -517,9 +515,7 @@ SELECT
   GLOBALEVENTID,
   MonthYear,
   Actor2CountryCode AS Actor1CountryCode,
-  Actor2Type1Code AS Actor1Type1Code,
   Actor1CountryCode AS Actor2CountryCode,
-  Actor1Type1Code AS Actor2Type1Code,
   QuadClass,
   EventCode,
   Actor1Code,
@@ -681,5 +677,7 @@ WHERE
       'YEM',
       'ZAF',
       'ZMB',
+      'VNM',
+      'ROM',
       'ZWE'))
   AND GoldsteinScale < 0
