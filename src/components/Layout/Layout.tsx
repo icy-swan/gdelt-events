@@ -24,14 +24,15 @@ export default class BaseLayout extends Component {
     const { pathname } = this.state
 
     return (
-      <Layout className="app-layout">
-        <SlideMenu />
-        <Layout className="site-layout">
-          <LayoutHeader />
-          <Breadcrumb />
-          <LayoutContent />
-        </Layout>
-      </Layout>
+      // <Layout className="app-layout">
+      //   <SlideMenu />
+      //   <Layout className="site-layout">
+      //     <LayoutHeader />
+      //     <Breadcrumb />
+      //     <LayoutContent />
+      //   </Layout>
+      // </Layout>
+      <LayoutContent />
     )
   }
 

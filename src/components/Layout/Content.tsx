@@ -14,7 +14,7 @@ export default class LayoutContent extends Component {
       <Content className="app-container">
         <div
           className="site-layout-background"
-          style={{ padding: 24, textAlign: 'center' }}
+          // style={{ padding: 24, textAlign: 'center' }}
         >
           <Switch>
             {this.renderRoutes()}

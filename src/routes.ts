@@ -6,21 +6,9 @@ export default [
     component: () => import('./pages/Home')
   },
   {
-    path: '/article/demopage1',
+    path: '/bubbleView',
     name: 'demoPage1',
     exact: true,
-    component: () => import('./pages/DemoPage1')
-  },
-  {
-    path: '/set/demopage2',
-    name: 'demoPage2',
-    exact: true,
-    component: () => import('./pages/DemoPage2')
-  },
-  {
-    path: '/set/demohooks',
-    name: 'demohooks',
-    exact: true,
-    component: () => import('./pages/DemoHooks')
+    component: () => import('./pages/BubbleView')
   }
 ]
