@@ -64,7 +64,7 @@ fs.createReadStream(path.resolve(__dirname, 'node', 'input', 'country.csv'))
             regData.push(buildData);
             countryCode.isBMZM[region] = regData;
         }
-        // 北美自由贸易区
+        // 欧盟
         if('1' === isOM) {
             countryData.isOM.all.push(buildData);
             regData = countryCode.isOM[region];
@@ -74,15 +74,23 @@ fs.createReadStream(path.resolve(__dirname, 'node', 'input', 'country.csv'))
             regData.push(buildData);
             countryCode.isOM[region] = regData;
         }
+        // 洲
+        regData = countryData.region[region];
+        if(!regData) {
+            regData = [];
+        }
+        regData.push(buildData);
+        countryData.region[region] = regData;
     })
     .on('end', (rowCount) => {
-        fs.writeFile(path.resolve(__dirname, 'input', 'report.json'), JSON.stringify(result), 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("JSON report has been saved.");
-        });
+        // TODO
+        // fs.writeFile(path.resolve(__dirname, 'input', 'report.json'), JSON.stringify(result), 'utf8', function (err) {
+        //     if (err) {
+        //         console.log("An error occured while writing JSON Object to File.");
+        //         return console.log(err);
+        //     }
+        //     console.log("JSON report has been saved.");
+        // });
     });
 
 //
