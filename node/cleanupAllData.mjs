@@ -103,9 +103,9 @@ function cleanupData(fileName) {
                             fillCoutryData(rows, year, -1, countryList.indexOf(country), hasQuadClass);
                         }
                         tempQuadClassObj = Object.assign({}, originTempQS);
-                        if(hasQuadClass) {
-                            tempQuadClassObj[row[indexOfQuadClass]] = true;
-                        }
+                    }
+                    if(hasQuadClass) {
+                        tempQuadClassObj[row[indexOfQuadClass]] = true;
                     }
                     // !important 写入数据 - 直接写入当前数据
                     rows.push(row);
@@ -151,14 +151,26 @@ function cleanupData(fileName) {
             }
         })
         .on('end', (rowCount) => {
+            // 补齐最后运行的一年的数据
+            // 首先补齐上个国家的qs的数据
+            if(hasQuadClass) {
+                // !important 写入数据 - 补齐上一年的国家的qs数据
+                fillQSData(rows, tempQuadClassObj, lastRow, indexOfQuadClass);
+            }
+            // 再补齐上一年缺失的国家
+            const lastYearCountryIndex = countryList.indexOf(lastCountry);
+            if(lastYearCountryIndex !== (countryList.length - 1)) {
+                // !important 写入数据 - 补齐上一年的未写入的国家的数据
+                fillCoutryData(rows, lastYear, lastYearCountryIndex, countryList.length, hasQuadClass);
+            }
             csv.writeToPath(path.resolve(__dirname, 'node', 'output', `${fileName}.csv`), rows)
                 .on('error', err => console.error(err))
                 .on('finish', () => console.log('Done writing.'));
         });
 }
 
-// ['origin', 'origin-c1', 'origin-c2', 'origin-c3'].forEach(c => {
-//     cleanupData(c);
-// })
+['origin', 'origin-c1', 'origin-c2', 'origin-c3'].forEach(c => {
+    cleanupData(c);
+})
 
-cleanupData('test');
+// cleanupData('test');
