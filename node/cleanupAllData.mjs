@@ -27,16 +27,16 @@ function fillCoutryData(target, lastYear, startIndex, endIndex, hasQuadClass) {
     }
 }
 
-function fillQSData(rows, tempQuardClassObj, lastRow, indexOfQuardClass) {
-    Object.keys(tempQuardClassObj).forEach(k => {
+function fillQSData(rows, tempQuadClassObj, lastRow, indexOfQuadClass) {
+    Object.keys(tempQuadClassObj).forEach(k => {
         // 发现缺失，插入数据
-        if(tempQuardClassObj[k] === false) {
-            tempRow = Array.from(lastRow);
-            tempRow[indexOfQuardClass] = k;
+        if(tempQuadClassObj[k] === false) {
+            const tempRow = Array.from(lastRow);
+            tempRow[indexOfQuadClass] = k;
             // gs补0
-            tempRow[indexOfQuardClass + 1] = 0;
+            tempRow[indexOfQuadClass + 1] = 0;
             // count补0
-            tempRow[indexOfQuardClass + 1] = 0;
+            tempRow[indexOfQuadClass + 2] = 0;
             // !important 写入数据 - 写入补齐的上个国家的缺失的qs的数据
             rows.push(tempRow);
         }
@@ -52,12 +52,12 @@ function cleanupData(fileName) {
     let hasQuadClass = false;
     let indexOfYear;
     let indexOfCountry;
-    let indexOfQuardClass;
+    let indexOfQuadClass;
 
     // 数据补全判断
     let lastYear = null;
     let lastCountry = null;
-    let tempQuardClassObj = Object.assign({}, originTempQS);
+    let tempQuadClassObj = Object.assign({}, originTempQS);
     let lastRow = null;
 
     fs.createReadStream(path.resolve(__dirname, 'node', 'input', `${fileName}.csv`))
@@ -70,9 +70,9 @@ function cleanupData(fileName) {
                 rows.push(row);
                 indexOfYear = header.indexOf('YEAR');
                 indexOfCountry = header.indexOf('Actor2CountryCode');
-                indexOfQuardClass = header.indexOf('QuardClass');
-                // 判断是否有quardClass的分类
-                if(indexOfQuardClass !== -1) {
+                indexOfQuadClass = header.indexOf('QuadClass');
+                // 判断是否有quadClass的分类
+                if(indexOfQuadClass !== -1) {
                     hasQuadClass = true;
                 }
                 isHeader = false;
@@ -87,9 +87,9 @@ function cleanupData(fileName) {
                         // 首先补齐上个国家的qs的数据
                         if(hasQuadClass) {
                             // !important 写入数据 - 补齐上一年的国家的qs数据
-                            fillQSData(rows, tempQuardClassObj, lastRow, indexOfQuardClass);
+                            fillQSData(rows, tempQuadClassObj, lastRow, indexOfQuadClass);
                             // 再将qs对象重置
-                            tempQuardClassObj = Object.assign({}, originTempQS);
+                            tempQuadClassObj = Object.assign({}, originTempQS);
                         }
                         // 再补齐上一年缺失的国家
                         const lastYearCountryIndex = countryList.indexOf(lastCountry);
@@ -102,36 +102,35 @@ function cleanupData(fileName) {
                         if(countryList.indexOf(country) !== 0) {
                             fillCoutryData(rows, year, -1, countryList.indexOf(country), hasQuadClass);
                         }
-                        tempQuardClassObj = Object.assign({}, originTempQS);
+                        tempQuadClassObj = Object.assign({}, originTempQS);
                         if(hasQuadClass) {
-                            tempQuardClassObj[row[indexOfQuardClass]] = true;
+                            tempQuadClassObj[row[indexOfQuadClass]] = true;
                         }
-                        // !important 写入数据 - 直接写入当前数据
-                        rows.push(row);
                     }
-                    
+                    // !important 写入数据 - 直接写入当前数据
+                    rows.push(row);
                 } else {
                     // 如果存在quadClass，country会重复出现。并需要补齐
                     // 如果国家一致
                     if(lastCountry === country) {
                         if(hasQuadClass) {
-                            const quardClass = row[indexOfQuardClass];
+                            const quadClass = row[indexOfQuadClass];
                             // 将该年的qs设置为true
-                            tempQuardClassObj[quardClass] = true;
+                            tempQuadClassObj[quadClass] = true;
                             // !important 写入数据 - 直接写入当前数据
                             rows.push(row);
                         } else {
-                            throw new Error('没有quardClass的数据，出现了国家的重复');
+                            throw new Error('没有quadClass的数据，出现了国家的重复');
                         }
                     } else {
                         if(hasQuadClass) {
-                            const quardClass = row[indexOfQuardClass];
+                            const quadClass = row[indexOfQuadClass];
                             // 更换国家，先判断上一个国家的qs数据是否补全了，不全的补全
                             // !important 写入数据 - 补齐上一个国家的qs
-                            fillQSData(rows, tempQuardClassObj, lastRow, indexOfQuardClass);
+                            fillQSData(rows, tempQuadClassObj, lastRow, indexOfQuadClass);
                             // 再将qs对象重置并赋值当前qs
-                            tempQuardClassObj = Object.assign({}, originTempQS);
-                            tempQuardClassObj[quardClass] = true;
+                            tempQuadClassObj = Object.assign({}, originTempQS);
+                            tempQuadClassObj[quadClass] = true;
                         }
                         // 更换国家后，判断当前的国家的index和上一个国家的index+1是否一致，如果不一致
                         // 要从上一个国家index+1，补齐到当前国家
