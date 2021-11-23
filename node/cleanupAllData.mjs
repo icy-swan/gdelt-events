@@ -27,6 +27,21 @@ function fillCoutryData(target, lastYear, startIndex, endIndex, hasQuadClass) {
     }
 }
 
+function fillQSData(rows, tempQuardClassObj, lastRow, indexOfQuardClass) {
+    Object.keys(tempQuardClassObj).forEach(k => {
+        // 发现缺失，插入数据
+        if(tempQuardClassObj[k] === false) {
+            tempRow = Array.from(lastRow);
+            tempRow[indexOfQuardClass] = k;
+            // gs补0
+            tempRow[indexOfQuardClass + 1] = 0;
+            // count补0
+            tempRow[indexOfQuardClass + 1] = 0;
+            // !important 写入数据 - 写入补齐的上个国家的缺失的qs的数据
+            rows.push(tempRow);
+        }
+    })
+}
 function cleanupData(fileName) {
     // 输出
     let rows = [];
@@ -65,11 +80,36 @@ function cleanupData(fileName) {
                 //读取数据
                 const year = row[indexOfYear];
                 const country  = row[indexOfCountry];
-                // 换一年后，lastYear， tempQS要重置
+                // 年发生切换
                 if(year !== lastYear) {
-                    lastYear = null;
-                    tempQuardClassObj = Object.assign({}, originTempQS);
-                    // TODO 换年之前要判断国家的补齐是否全了
+                    // 非初始态，补齐，补齐后和初始态一致
+                    if(null !== lastYear) {
+                        // 首先补齐上个国家的qs的数据
+                        if(hasQuadClass) {
+                            // !important 写入数据 - 补齐上一年的国家的qs数据
+                            fillQSData(rows, tempQuardClassObj, lastRow, indexOfQuardClass);
+                            // 再将qs对象重置
+                            tempQuardClassObj = Object.assign({}, originTempQS);
+                        }
+                        // 再补齐上一年缺失的国家
+                        const lastYearCountryIndex = countryList.indexOf(lastCountry);
+                        if(lastYearCountryIndex !== (countryList.length - 1)) {
+                            // !important 写入数据 - 补齐上一年的未写入的国家的数据
+                            fillCoutryData(rows, lastYear, lastYearCountryIndex, countryList.length, hasQuadClass);
+                        }
+                    } else {
+                        //如果第一个country没有符合顺序，补齐
+                        if(countryList.indexOf(country) !== 0) {
+                            fillCoutryData(rows, year, -1, countryList.indexOf(country), hasQuadClass);
+                        }
+                        tempQuardClassObj = Object.assign({}, originTempQS);
+                        if(hasQuadClass) {
+                            tempQuardClassObj[row[indexOfQuardClass]] = true;
+                        }
+                        // !important 写入数据 - 直接写入当前数据
+                        rows.push(row);
+                    }
+                    
                 } else {
                     // 如果存在quadClass，country会重复出现。并需要补齐
                     // 如果国家一致
@@ -87,19 +127,8 @@ function cleanupData(fileName) {
                         if(hasQuadClass) {
                             const quardClass = row[indexOfQuardClass];
                             // 更换国家，先判断上一个国家的qs数据是否补全了，不全的补全
-                            Object.keys(tempQuardClassObj).forEach(k => {
-                                // 发现缺失，插入数据
-                                if(tempQuardClassObj[k] === false) {
-                                    tempRow = Array.from(lastRow);
-                                    tempRow[indexOfQuardClass] = k;
-                                    // gs补0
-                                    tempRow[indexOfQuardClass + 1] = 0;
-                                    // count补0
-                                    tempRow[indexOfQuardClass + 1] = 0;
-                                    // !important 写入数据 - 写入补齐的上一年的缺失的qs的数据
-                                    rows.push(tempRow);
-                                }
-                            })
+                            // !important 写入数据 - 补齐上一个国家的qs
+                            fillQSData(rows, tempQuardClassObj, lastRow, indexOfQuardClass);
                             // 再将qs对象重置并赋值当前qs
                             tempQuardClassObj = Object.assign({}, originTempQS);
                             tempQuardClassObj[quardClass] = true;
@@ -116,14 +145,13 @@ function cleanupData(fileName) {
                         rows.push(row);
                     }
                 }
-                // 缓存旧数据
+                // 缓存当前数据
                 lastYear = year;
                 lastCountry = country;
                 lastRow = Array.from(row);
             }
         })
         .on('end', (rowCount) => {
-            return;
             csv.writeToPath(path.resolve(__dirname, 'node', 'output', `${fileName}.csv`), rows)
                 .on('error', err => console.error(err))
                 .on('finish', () => console.log('Done writing.'));
