@@ -23,6 +23,7 @@ fs.createReadStream(path.resolve(__dirname, 'node', 'input', 'country.csv'))
     .pipe(csv.parse({ headers: true }))
     .on('error', error => console.error(error))
     .on('data', row => {
+        debugger
         const {countrycode: countryCode, countryname: countryName, '是否一带一路': isYDYL, '是否东盟': isDM, '是否北美自由贸易区': isBMZM, '是否欧盟': isOM, '洲': region} = row;
         const buildData = {
             countryCode,
