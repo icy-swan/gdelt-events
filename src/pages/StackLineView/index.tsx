@@ -254,12 +254,28 @@ export default () => {
                         type: 'category',
                         axisTick: { show: false },
                         data: years,
+                        nameTextStyle: {
+                            color: '#333',
+                            fontSize: 16,
+                        },
+                        axisLabel: {
+                            color: '#333',
+                            fontSize: 16,
+                        }
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
                         name: yName,
+                        nameTextStyle: {
+                            color: '#333',
+                            fontSize: 16,
+                        },
+                        axisLabel: {
+                            color: '#333',
+                            fontSize: 16,
+                        }
                     }
                 ],
                 series,
