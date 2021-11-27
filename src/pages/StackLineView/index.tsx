@@ -48,6 +48,52 @@ export default () => {
                 series.push(serie);
             }
         })
+    } else if( 'compareYDYL' === type) {
+        // code-name结构
+        let ydylCountryNames = {};
+        countryData.isYDYL.all.forEach(c => {
+            const {countryCode, countryName} = c;
+            ydylCountryNames[countryCode] = countryNames;
+        })
+        countryNames = ['一带一路', '非一带一路'];
+        const s1 = {
+            name: countryNames[0],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        const s2 = {
+            name: countryNames[1],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        for (let year = 2015; year <= 2020; year++) {
+            const yearData = originData[`${year}`];
+            let data1 = 0;
+            let data2 = 0;
+            for (const [cc, value] of Object.entries(yearData)) {
+                const { RecordCount } = value;
+                // 如果是一带一路
+                if(ydylCountryNames[cc]) {
+                    data1 += parseInt(RecordCount);
+                } else {
+                    data2 += parseInt(RecordCount);
+                }
+            }
+            s1.data.push(data1);
+            s2.data.push(data2);
+        }
+        series.push(s1);
+        series.push(s2);
     }
 
 
