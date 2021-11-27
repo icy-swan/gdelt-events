@@ -51,6 +51,7 @@ export default () => {
         })
     } else if( 'compareYDYL' === type) {
         // code-name结构
+        colors = ['#c8102e', '#3B3B6D'];
         let ydylCountryNames = {};
         countryData.isYDYL.all.forEach(c => {
             const {countryCode, countryName} = c;
