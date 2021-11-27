@@ -16,5 +16,11 @@ export default [
     name: 'demoPage1',
     exact: true,
     component: () => import('./pages/StackLineView')
+  },
+  {
+    path: '/stackLineBarView',
+    name: 'demoPage1',
+    exact: true,
+    component: () => import('./pages/StackLineBarView')
   }
 ]
