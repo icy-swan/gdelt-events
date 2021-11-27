@@ -49,12 +49,12 @@ export default () => {
                 series.push(serie);
             }
         })
-    } else if( 'compareYDYL' === type) {
+    } else if ('compareYDYL' === type) {
         // code-name结构
         colors = ['#c8102e', '#3B3B6D'];
         let ydylCountryNames = {};
         countryData.isYDYL.all.forEach(c => {
-            const {countryCode, countryName} = c;
+            const { countryCode, countryName } = c;
             ydylCountryNames[countryCode] = countryNames;
         })
         countryNames = ['一带一路', '非一带一路'];
@@ -85,7 +85,7 @@ export default () => {
             for (const [cc, value] of Object.entries(yearData)) {
                 const { RecordCount } = value;
                 // 如果是一带一路
-                if(ydylCountryNames[cc]) {
+                if (ydylCountryNames[cc]) {
                     data1 += parseInt(RecordCount);
                 } else {
                     data2 += parseInt(RecordCount);
@@ -96,11 +96,11 @@ export default () => {
         }
         series.push(s1);
         series.push(s2);
-    } else if( 'compareYDYLGYH' === type) {
+    } else if ('compareYDYLGYH' === type) {
         // code-name结构
         let ydylCountryNames = {};
         countryData.isYDYL.all.forEach(c => {
-            const {countryCode, countryName} = c;
+            const { countryCode, countryName } = c;
             ydylCountryNames[countryCode] = countryNames;
         })
         countryNames = ['一带一路', '非一带一路'];
@@ -131,7 +131,7 @@ export default () => {
             for (const [cc, value] of Object.entries(yearData)) {
                 const { RecordCount } = value;
                 // 如果是一带一路
-                if(ydylCountryNames[cc]) {
+                if (ydylCountryNames[cc]) {
                     data1 += parseInt(RecordCount);
                 } else {
                     data2 += parseInt(RecordCount);
@@ -153,6 +153,72 @@ export default () => {
         series.push(s1);
         series.push(s2);
         yName = '风险量%';
+    } else if ('isSXD' === type) {
+        countryNames = ['北美自贸区', '东盟', '欧盟'];
+        const s1 = {
+            name: countryNames[0],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        const s2 = {
+            name: countryNames[1],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        const s3 = {
+            name: countryNames[2],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        function countryArrToObj(or) {
+            let ct = {};
+            or.forEach(c => {
+                const { countryCode, countryName } = c;
+                ct[countryCode] = countryNames;
+            })
+            return ct;
+        }
+        const isDM = countryArrToObj(countryData.isDM.all);
+        const isOM = countryArrToObj(countryData.isOM.all);
+        const isBMZM = countryArrToObj(countryData.isBMZM.all);
+        for (let year = 2015; year <= 2020; year++) {
+            const yearData = originData[`${year}`];
+            let data1 = 0;
+            let data2 = 0;
+            let data3 = 0;
+            for (const [cc, value] of Object.entries(yearData)) {
+                const { RecordCount } = value;
+                // 如果是一带一路
+                if (isBMZM[cc]) {
+                    data1 += parseInt(RecordCount);
+                } else if (isDM[cc]) {
+                    data2 += parseInt(RecordCount);
+                } else if (isOM[cc]) {
+                    data3 += parseInt(RecordCount);
+                }
+            }
+            s1.data.push(data1);
+            s2.data.push(data2);
+            s3.data.push(data3);
+        }
+        series.push(s1);
+        series.push(s2);
+        series.push(s3);
     }
 
 
