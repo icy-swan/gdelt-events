@@ -19,37 +19,12 @@ export default () => {
     const type = getQueryString('type');
     const typeCountryData = Object.assign({}, countryData[type]);
     const years = [];
-    for (let year = 2015; year <= 2020; year++) {
+    for (let year = 2014; year <= 2020; year++) {
         years.push(year + '');
     }
     let countryNames = [];
     let series = [];
     if ('isYDYL' === type) {
-        const dataForCheck = originData['2020'];
-        typeCountryData.all.forEach(c => {
-            const { countryName, countryCode } = c;
-            if (dataForCheck[countryCode]) {
-                countryNames.push[countryName];
-                let data = [];
-                for (let year = 2015; year <= 2020; year++) {
-                    const yearData = originData[`${year}`];
-                    const cData = yearData[countryCode] || {};
-                    data.push(cData.RecordCount || 0);
-                }
-                const serie = {
-                    name: countryName,
-                    type: 'line',
-                    stack: 'Total',
-                    areaStyle: {},
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data,
-                }
-                series.push(serie);
-            }
-        })
-    } else if( 'compareYDYL' === type) {
         // code-name结构
         let ydylCountryNames = {};
         countryData.isYDYL.all.forEach(c => {
@@ -62,9 +37,6 @@ export default () => {
             type: 'line',
             stack: 'Total',
             areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
             data: []
         }
         const s2 = {
@@ -72,12 +44,9 @@ export default () => {
             type: 'line',
             stack: 'Total',
             areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
             data: []
         }
-        for (let year = 2015; year <= 2020; year++) {
+        for (let year = 2014; year <= 2020; year++) {
             const yearData = originData[`${year}`];
             let data1 = 0;
             let data2 = 0;
@@ -95,63 +64,59 @@ export default () => {
         }
         series.push(s1);
         series.push(s2);
-    } else if( 'compareYDYLGYH' === type) {
-        // code-name结构
-        let ydylCountryNames = {};
-        countryData.isYDYL.all.forEach(c => {
-            const {countryCode, countryName} = c;
-            ydylCountryNames[countryCode] = countryNames;
-        })
-        countryNames = ['一带一路', '非一带一路'];
-        const s1 = {
-            name: countryNames[0],
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: []
-        }
-        const s2 = {
-            name: countryNames[1],
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-                focus: 'series'
-            },
-            data: []
-        }
-        for (let year = 2015; year <= 2020; year++) {
-            const yearData = originData[`${year}`];
-            let data1 = 0;
-            let data2 = 0;
-            for (const [cc, value] of Object.entries(yearData)) {
-                const { RecordCount } = value;
-                // 如果是一带一路
-                if(ydylCountryNames[cc]) {
-                    data1 += parseInt(RecordCount);
-                } else {
-                    data2 += parseInt(RecordCount);
-                }
+        let tmpData3 = Array.from(series[0].data);
+        let pre = null;
+        const data3 = tmpData3.map(v => {
+            if(pre === null) {
+                pre = v;
+                return null;
+            } else {
+                let tmpData =(v - pre) / pre * 100;
+                pre = v;
+                return tmpData;
             }
-            s1.data.push(data1);
-            s2.data.push(data2);
-        }
-        const t1 = s1.data.map((v, i) => {
-            let v2 = s2.data[i];
-            return v / (v + v2) * 100;
         })
-        const t2 = s2.data.map((v, i) => {
-            let v2 = s1.data[i];
-            return v / (v + v2) * 100;
+        data3.shift();
+
+        let tmpData4 = Array.from(series[1].data);
+        pre = null;
+        const data4 = tmpData4.map(v => {
+            if(pre === null) {
+                pre = v;
+                return null;
+            } else {
+                let tmpData =(v - pre) / pre * 100;
+                pre = v;
+                return tmpData;
+            }
         })
-        s1.data = t1;
-        s2.data = t2;
-        series.push(s1);
-        series.push(s2);
-        yName = '风险量%';
+        data4.shift();
+
+        series[0].data.shift();
+        series[1].data.shift();
+        series.push({
+            name: countryNames[0] + '同比',
+            type: 'bar',
+            // stack: 'Total',
+            areaStyle: {},
+            // emphasis: {
+            //     focus: 'series'
+            // },
+            yAxisIndex: 1,
+            data: data3,
+        }),
+        series.push({
+            name: countryNames[1] + '同比',
+            type: 'bar',
+            // stack: 'Total',
+            areaStyle: {},
+            // emphasis: {
+            //     focus: 'series'
+            // },
+            yAxisIndex: 1,
+            data: data4,
+        })
+        years.shift();
     }
 
 
@@ -193,6 +158,10 @@ export default () => {
                     {
                         type: 'value',
                         name: yName,
+                    },
+                    {
+                        type: 'value',
+                        name: `${yName}年同比%`,
                     }
                 ],
                 series,
