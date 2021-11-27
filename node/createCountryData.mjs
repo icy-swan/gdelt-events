@@ -23,7 +23,6 @@ fs.createReadStream(path.resolve(__dirname, 'node', 'input', 'country.csv'))
     .pipe(csv.parse({ headers: true }))
     .on('error', error => console.error(error))
     .on('data', row => {
-        debugger
         const {countrycode: countryCode, countryname: countryName, '是否一带一路': isYDYL, '是否东盟': isDM, '是否北美自由贸易区': isBMZM, '是否欧盟': isOM, '洲': region} = row;
         const buildData = {
             countryCode,
@@ -38,42 +37,42 @@ fs.createReadStream(path.resolve(__dirname, 'node', 'input', 'country.csv'))
         // 一带一路写入
         if('1' === isYDYL) {
             countryData.isYDYL.all.push(buildData);
-            regData = countryCode.isYDYL[region];
+            regData = countryData.isYDYL[region];
             if(!regData) {
                 regData = [];
             }
             regData.push(buildData);
-            countryCode.isYDYL[region] = regData;
+            countryData.isYDYL[region] = regData;
         }
         // 东盟
         if('1' === isDM) {
             countryData.isDM.all.push(buildData);
-            regData = countryCode.isDM[region];
+            regData = countryData.isDM[region];
             if(!regData) {
                 regData = [];
             }
             regData.push(buildData);
-            countryCode.isDM[region] = regData;
+            countryData.isDM[region] = regData;
         }
         // 北美自由贸易区
         if('1' === isBMZM) {
             countryData.isBMZM.all.push(buildData);
-            regData = countryCode.isBMZM[region];
+            regData = countryData.isBMZM[region];
             if(!regData) {
                 regData = [];
             }
             regData.push(buildData);
-            countryCode.isBMZM[region] = regData;
+            countryData.isBMZM[region] = regData;
         }
         // 欧盟
         if('1' === isOM) {
             countryData.isOM.all.push(buildData);
-            regData = countryCode.isOM[region];
+            regData = countryData.isOM[region];
             if(!regData) {
                 regData = [];
             }
             regData.push(buildData);
-            countryCode.isOM[region] = regData;
+            countryData.isOM[region] = regData;
         }
         // 洲
         regData = countryData.region[region];
@@ -84,14 +83,13 @@ fs.createReadStream(path.resolve(__dirname, 'node', 'input', 'country.csv'))
         countryData.region[region] = regData;
     })
     .on('end', (rowCount) => {
-        // TODO
-        // fs.writeFile(path.resolve(__dirname, 'input', 'report.json'), JSON.stringify(result), 'utf8', function (err) {
-        //     if (err) {
-        //         console.log("An error occured while writing JSON Object to File.");
-        //         return console.log(err);
-        //     }
-        //     console.log("JSON report has been saved.");
-        // });
+        fs.writeFile(path.resolve(__dirname, 'node', 'output', 'countryData.json'), JSON.stringify(countryData), 'utf8', function (err) {
+            if (err) {
+                console.log("An error occured while writing countryData JSON Object to File.");
+                return console.log(err);
+            }
+            console.log("countryData JSON report has been saved.");
+        });
     });
 
 //
