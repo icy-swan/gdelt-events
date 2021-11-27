@@ -13,7 +13,7 @@ function getQueryString(name: string) {
 }
 
 export default () => {
-    let colors = [];
+    let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#dd2727', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
     //处理数据
     const type = getQueryString('type');
     const typeCountryData = Object.assign({}, countryData[type]);

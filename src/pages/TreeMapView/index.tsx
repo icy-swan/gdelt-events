@@ -46,7 +46,7 @@ export default () => {
 
   if ('isYDYL' === type) {
     // 保持颜色对应
-    colors = ['#E67E22', '#27AE60', '#F1C40F', '#dd2727', '#9B59B6', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
+    colors = ['#E67E22', '#27AE60', '#F1C40F', '#3498DB', '#9B59B6', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
     delete typeCountryData.all;
     const regionNames = Object.keys(typeCountryData);
     targetData = regionNames.map((name) => {
