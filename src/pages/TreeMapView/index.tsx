@@ -35,6 +35,17 @@ function getLevelOption() {
   ];
 }
 
+function getName(k) {
+  switch (k) {
+    case 'isDM':
+      return '东盟';
+    case 'isOM':
+      return '欧盟';
+    case 'isBMZM':
+      return '北美自贸区';
+  }
+}
+
 export default () => {
   //处理数据
   let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#dd2727', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
@@ -72,6 +83,36 @@ export default () => {
         children,
       }
     });
+  } else if ('isSXD' === type) {
+    const sxdCountrys = {
+      isDM: countryData.isDM.all,
+      isOM: countryData.isOM.all,
+      isBMZM: countryData.isBMZM.all,
+    }
+    targetData = Object.keys(sxdCountrys).map(k => {
+      let value = 0;
+      const name = getName(k);
+      const children = sxdCountrys[k].map(cData => {
+        const { countryCode, countryName } = cData;
+        const cMeasureData = measureData[countryCode] || { RecordCount: 0 };
+        if (!measureData[countryCode]) {
+          console.log(countryCode, countryName);
+        }
+        const cValue = cMeasureData.RecordCount;
+        value += cValue;
+        return {
+          value: cValue,
+          name: countryName,
+          path: name,
+        }
+      })
+      return {
+        value,
+        name,
+        path: name,
+        children,
+      }
+    })
   }
 
 
