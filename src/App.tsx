@@ -6,8 +6,6 @@ import routes from './routes'
 // 组件按需加载(Code Spliting)
 const Layout = loadable(() => import('./components/Layout/Layout'))
 
-const Login = loadable(() => import('./pages/Login'))
-
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 
@@ -18,7 +16,6 @@ export default class App extends Component {
     return (
       <HashRouter>
         <Switch>
-          <Route exact path="/login" render={props => <Login {...props} />} />
           <Route
             path="/"
             render={props => <Layout route={routes} {...props} />}
