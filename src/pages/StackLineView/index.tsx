@@ -14,6 +14,7 @@ function getQueryString(name: string) {
 
 export default () => {
     let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#dd2727', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
+    let yName = '风险量';
     //处理数据
     const type = getQueryString('type');
     const typeCountryData = Object.assign({}, countryData[type]);
@@ -94,6 +95,63 @@ export default () => {
         }
         series.push(s1);
         series.push(s2);
+    } else if( 'compareYDYLGYH' === type) {
+        // code-name结构
+        let ydylCountryNames = {};
+        countryData.isYDYL.all.forEach(c => {
+            const {countryCode, countryName} = c;
+            ydylCountryNames[countryCode] = countryNames;
+        })
+        countryNames = ['一带一路', '非一带一路'];
+        const s1 = {
+            name: countryNames[0],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        const s2 = {
+            name: countryNames[1],
+            type: 'line',
+            stack: 'Total',
+            areaStyle: {},
+            emphasis: {
+                focus: 'series'
+            },
+            data: []
+        }
+        for (let year = 2015; year <= 2020; year++) {
+            const yearData = originData[`${year}`];
+            let data1 = 0;
+            let data2 = 0;
+            for (const [cc, value] of Object.entries(yearData)) {
+                const { RecordCount } = value;
+                // 如果是一带一路
+                if(ydylCountryNames[cc]) {
+                    data1 += parseInt(RecordCount);
+                } else {
+                    data2 += parseInt(RecordCount);
+                }
+            }
+            s1.data.push(data1);
+            s2.data.push(data2);
+        }
+        const t1 = s1.data.map((v, i) => {
+            let v2 = s2.data[i];
+            return v / (v + v2) * 100;
+        })
+        const t2 = s2.data.map((v, i) => {
+            let v2 = s1.data[i];
+            return v / (v + v2) * 100;
+        })
+        s1.data = t1;
+        s2.data = t2;
+        series.push(s1);
+        series.push(s2);
+        yName = '风险量%';
     }
 
 
@@ -134,7 +192,7 @@ export default () => {
                 yAxis: [
                     {
                         type: 'value',
-                        name: '风险量',
+                        name: yName,
                     }
                 ],
                 series,
