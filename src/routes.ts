@@ -10,5 +10,11 @@ export default [
     name: 'demoPage1',
     exact: true,
     component: () => import('./pages/TreeMapView')
+  },
+  {
+    path: '/stackLineView',
+    name: 'demoPage1',
+    exact: true,
+    component: () => import('./pages/StackLineView')
   }
 ]
