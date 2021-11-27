@@ -11,8 +11,7 @@
     "build": "rm -rf dist && webpack --config webpack/webpack.prod.js --progress --color",
     "dll": "rm -rf dll && webpack --config webpack/webpack.dll.js"
   },
-  "repository": "https://github.com/Vibing/webpack5-react-demo.git",
-  "author": "chenlong <903245852@qq.com>",
+  "author": "ianli",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
