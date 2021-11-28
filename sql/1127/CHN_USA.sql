@@ -45,6 +45,7 @@ WHERE
         '1663',
         '174'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -94,6 +95,7 @@ WHERE
         '1663',
         '174'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -160,6 +162,7 @@ WHERE
         '1721',
         '1722'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -226,6 +229,7 @@ WHERE
         '1721',
         '1722'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -290,6 +294,7 @@ WHERE
         '2041',
         '2042'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -354,6 +359,7 @@ WHERE
         '2041',
         '2042'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -403,6 +409,7 @@ WHERE
         '185',
         '186'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -452,6 +459,7 @@ WHERE
         '185',
         '186'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -502,6 +510,7 @@ WHERE
         '1712',
         '172'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -552,6 +561,7 @@ WHERE
         '1712',
         '172'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -702,6 +712,7 @@ WHERE
         '1623',
         '170'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -852,3 +863,4 @@ WHERE
         '1623',
         '170'
     )
+    AND GoldsteinScale < 0

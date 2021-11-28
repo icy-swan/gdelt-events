@@ -13,7 +13,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor1CountryCode = 'CHN'
-        AND Actor2CountryCode = 'USA'
+        AND Actor2CountryCode = 'IND'
     )
     AND EventCode IN (
         '0255',
@@ -45,6 +45,7 @@ WHERE
         '1663',
         '174'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -62,7 +63,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor2CountryCode = 'CHN'
-        AND Actor1CountryCode = 'USA'
+        AND Actor1CountryCode = 'IND'
     )
     AND EventCode IN (
         '0255',
@@ -94,6 +95,7 @@ WHERE
         '1663',
         '174'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -111,7 +113,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor1CountryCode = 'CHN'
-        AND Actor2CountryCode = 'USA'
+        AND Actor2CountryCode = 'IND'
     )
     AND EventCode IN (
         '024',
@@ -160,6 +162,7 @@ WHERE
         '1721',
         '1722'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -177,7 +180,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor2CountryCode = 'CHN'
-        AND Actor1CountryCode = 'USA'
+        AND Actor1CountryCode = 'IND'
     )
     AND EventCode IN (
         '024',
@@ -226,6 +229,7 @@ WHERE
         '1721',
         '1722'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -243,7 +247,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor1CountryCode = 'CHN'
-        AND Actor2CountryCode = 'USA'
+        AND Actor2CountryCode = 'IND'
     )
     AND EventCode IN (
         '0256',
@@ -290,6 +294,7 @@ WHERE
         '2041',
         '2042'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -307,7 +312,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor2CountryCode = 'CHN'
-        AND Actor1CountryCode = 'USA'
+        AND Actor1CountryCode = 'IND'
     )
     AND EventCode IN (
         '0256',
@@ -354,6 +359,7 @@ WHERE
         '2041',
         '2042'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -371,7 +377,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor1CountryCode = 'CHN'
-        AND Actor2CountryCode = 'USA'
+        AND Actor2CountryCode = 'IND'
     )
     AND EventCode IN (
         '113',
@@ -403,6 +409,7 @@ WHERE
         '185',
         '186'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -420,7 +427,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor2CountryCode = 'CHN'
-        AND Actor1CountryCode = 'USA'
+        AND Actor1CountryCode = 'IND'
     )
     AND EventCode IN (
         '113',
@@ -452,6 +459,7 @@ WHERE
         '185',
         '186'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -469,7 +477,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor1CountryCode = 'CHN'
-        AND Actor2CountryCode = 'USA'
+        AND Actor2CountryCode = 'IND'
     )
     AND EventCode IN (
         '0211',
@@ -502,6 +510,7 @@ WHERE
         '1712',
         '172'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -519,7 +528,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor2CountryCode = 'CHN'
-        AND Actor1CountryCode = 'USA'
+        AND Actor1CountryCode = 'IND'
     )
     AND EventCode IN (
         '0211',
@@ -552,6 +561,7 @@ WHERE
         '1712',
         '172'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -569,7 +579,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor1CountryCode = 'CHN'
-        AND Actor2CountryCode = 'USA'
+        AND Actor2CountryCode = 'IND'
     )
     AND EventCode IN (
         '010',
@@ -702,6 +712,7 @@ WHERE
         '1623',
         '170'
     )
+    AND GoldsteinScale < 0
 UNION
 ALL
 SELECT
@@ -719,7 +730,7 @@ WHERE
     AND YEAR <= 2020
     AND (
         Actor2CountryCode = 'CHN'
-        AND Actor1CountryCode = 'USA'
+        AND Actor1CountryCode = 'IND'
     )
     AND EventCode IN (
         '010',
@@ -852,3 +863,4 @@ WHERE
         '1623',
         '170'
     )
+    AND GoldsteinScale < 0
