@@ -1,7 +1,8 @@
 import './style.less'
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
-import originData from '../../config/originData'
+import originData2021 from '../../config/originData2021'
+import countryData from '../../config/countryData';
 
 export default () => {
     useEffect(()=> {
@@ -10,16 +11,23 @@ export default () => {
             renderer: 'svg'
         });
         var option;
-        const targetData = originData[2020];
+        const targetData = originData2021[2021];
         var series = [];
-        var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '南美洲'];
+        var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '拉丁美洲'];
 
+        const regionCountrys = Object.assign({}, countryData['region']);
         regionsList.forEach(k => {
-            const countryData = targetData[k];
-            const countryNames = Object.keys(countryData);
-            const data = countryNames.map(c => {
-                const countryObj = countryData[c];
-                return [countryObj.count, countryObj.risk1, countryObj.countryCN];
+            const countryNames = regionCountrys[k];
+
+            // const countryData = targetData[k];
+            // const countryNames = Object.keys(countryData);
+            const data = [];
+            countryNames.forEach(c => {
+                const {countryName, countryCode} = c;
+                const countryObj = targetData[countryCode];
+                if(countryObj) {
+                    data.push([countryObj.RecordCount, countryObj.risk1, countryName]);
+                }
             })
             series.push({
                 name: k,
