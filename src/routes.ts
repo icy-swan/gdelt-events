@@ -28,5 +28,5 @@ export default [
     name: 'demoPage1',
     exact: true,
     component: () => import('./pages/RoseView')
-  }
+  },
 ]

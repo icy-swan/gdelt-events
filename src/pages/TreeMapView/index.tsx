@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
-import originData from '../../config/originData';
+import originData from '../../config/originData2021';
 import countryData from '../../config/countryData';
 
 function getQueryString(name: string) {
@@ -53,7 +53,7 @@ export default () => {
   const type = getQueryString('type');
   const typeCountryData = Object.assign({}, countryData[type]);
 
-  const measureData = originData['2020'];
+  const measureData = originData['2021'];
 
   if ('isYDYL' === type) {
     // 保持颜色对应
@@ -113,6 +113,32 @@ export default () => {
         children,
       }
     })
+  } else if('region' === type) {
+    delete typeCountryData.all;
+    const regionNames = Object.keys(typeCountryData);
+    targetData = regionNames.map((name) => {
+      let value = 0;
+      const children = typeCountryData[name].map(cData => {
+        const { countryCode, countryName } = cData;
+        const cMeasureData = measureData[countryCode] || { RecordCount: 0 };
+        if (!measureData[countryCode]) {
+          console.log(countryCode, countryName);
+        }
+        const cValue = cMeasureData.RecordCount;
+        value += cValue;
+        return {
+          value: cValue,
+          name: countryName,
+          path: name,
+        }
+      })
+      return {
+        value,
+        name,
+        path: name,
+        children,
+      }
+    });
   }
 
 
