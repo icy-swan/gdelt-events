@@ -14,8 +14,10 @@ export default () => {
         var option;
         const lastData = originData[2020];
         const targetData = originData2021[2021];
+        // const lastData = originData[2019];
+        // const targetData = originData[2020];
         var series = [];
-        var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '拉丁美洲'];
+        var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '南美洲'];
 
         const regionCountrys = Object.assign({}, countryData['region']);
         regionsList.forEach(k => {
