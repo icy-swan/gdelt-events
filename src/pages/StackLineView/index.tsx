@@ -25,13 +25,13 @@ export default () => {
     let countryNames = [];
     let series = [];
     if ('isYDYL' === type) {
-        const dataForCheck = originData['2020'];
+        const dataForCheck = originData['2021'];
         typeCountryData.all.forEach(c => {
             const { countryName, countryCode } = c;
             if (dataForCheck[countryCode]) {
                 countryNames.push[countryName];
                 let data = [];
-                for (let year = 2015; year <= 2020; year++) {
+                for (let year = 2016; year <= 2021; year++) {
                     const yearData = originData[`${year}`];
                     const cData = yearData[countryCode] || {};
                     data.push(cData.RecordCount || 0);
