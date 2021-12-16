@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
-import originData from '../../config/originData';
+import originData from '../../config/originDataMerge';
 import countryData from '../../config/countryData';
 
 function getQueryString(name: string) {
@@ -19,7 +19,7 @@ export default () => {
     const type = getQueryString('type');
     const typeCountryData = Object.assign({}, countryData[type]);
     const years = [];
-    for (let year = 2015; year <= 2020; year++) {
+    for (let year = 2016; year <= 2021; year++) {
         years.push(year + '');
     }
     let countryNames = [];
@@ -78,7 +78,7 @@ export default () => {
             },
             data: []
         }
-        for (let year = 2015; year <= 2020; year++) {
+        for (let year = 2016; year <= 2021; year++) {
             const yearData = originData[`${year}`];
             let data1 = 0;
             let data2 = 0;
@@ -124,7 +124,7 @@ export default () => {
             },
             data: []
         }
-        for (let year = 2015; year <= 2020; year++) {
+        for (let year = 2016; year <= 2021; year++) {
             const yearData = originData[`${year}`];
             let data1 = 0;
             let data2 = 0;
@@ -193,6 +193,7 @@ export default () => {
             })
             return ct;
         }
+
         const isDM = countryArrToObj(countryData.isDM.all);
         const isOM = countryArrToObj(countryData.isOM.all);
         const isBMZM = countryArrToObj(countryData.isBMZM.all);

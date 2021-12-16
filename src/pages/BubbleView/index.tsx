@@ -29,7 +29,7 @@ export default () => {
             countryNames.forEach(c => {
                 const {countryName, countryCode} = c;
                 const countryObj = targetData[countryCode];
-                if(countryObj) {
+                if(countryObj && parseInt(countryObj.RecordCount) > 100 ) {
                     const curC = countryObj.RecordCount;
                     const lastC = lastData[countryCode].RecordCount;
                     const risk1 = (curC - lastC) / lastC;
@@ -107,6 +107,10 @@ export default () => {
                     },
                     splitLine: {
                         show: false
+                    },
+                    axisLabel: {
+                        color: '#333',
+                        fontSize: 16,
                     }
                 },
                 yAxis: {
@@ -121,7 +125,9 @@ export default () => {
                     axisLabel: {
                         formatter: function (value, index) {
                             return value * 100 + '%';
-                        }
+                        },
+                        color: '#333',
+                        fontSize: 16,
                     },
                     splitLine: {
                         show: false
