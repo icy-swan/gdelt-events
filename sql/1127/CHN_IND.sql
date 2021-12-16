@@ -9,8 +9,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor1CountryCode = 'CHN'
         AND Actor2CountryCode = 'IND'
@@ -59,8 +59,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor2CountryCode = 'CHN'
         AND Actor1CountryCode = 'IND'
@@ -109,8 +109,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor1CountryCode = 'CHN'
         AND Actor2CountryCode = 'IND'
@@ -176,8 +176,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor2CountryCode = 'CHN'
         AND Actor1CountryCode = 'IND'
@@ -243,8 +243,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor1CountryCode = 'CHN'
         AND Actor2CountryCode = 'IND'
@@ -308,8 +308,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor2CountryCode = 'CHN'
         AND Actor1CountryCode = 'IND'
@@ -373,8 +373,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor1CountryCode = 'CHN'
         AND Actor2CountryCode = 'IND'
@@ -423,8 +423,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor2CountryCode = 'CHN'
         AND Actor1CountryCode = 'IND'
@@ -473,8 +473,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor1CountryCode = 'CHN'
         AND Actor2CountryCode = 'IND'
@@ -524,8 +524,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor2CountryCode = 'CHN'
         AND Actor1CountryCode = 'IND'
@@ -575,8 +575,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor1CountryCode = 'CHN'
         AND Actor2CountryCode = 'IND'
@@ -726,8 +726,8 @@ SELECT
 FROM
     `gdelt-bq.gdeltv2.events`
 WHERE
-    YEAR >= 2015
-    AND YEAR <= 2020
+    YEAR >= 2016
+    AND YEAR <= 2021
     AND (
         Actor2CountryCode = 'CHN'
         AND Actor1CountryCode = 'IND'
