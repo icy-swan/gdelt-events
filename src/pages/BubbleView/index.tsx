@@ -2,6 +2,7 @@ import './style.less'
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
 import originData2021 from '../../config/originData2021'
+import originData from '../../config/originData'
 import countryData from '../../config/countryData';
 
 export default () => {
@@ -11,6 +12,7 @@ export default () => {
             renderer: 'svg'
         });
         var option;
+        const lastData = originData[2020];
         const targetData = originData2021[2021];
         var series = [];
         var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '拉丁美洲'];
@@ -26,7 +28,10 @@ export default () => {
                 const {countryName, countryCode} = c;
                 const countryObj = targetData[countryCode];
                 if(countryObj) {
-                    data.push([countryObj.RecordCount, countryObj.risk1, countryName]);
+                    const curC = countryObj.RecordCount;
+                    const lastC = lastData[countryCode].RecordCount;
+                    const risk1 = (curC - lastC) / lastC;
+                    data.push([countryObj.RecordCount, risk1, countryName]);
                 }
             })
             series.push({
