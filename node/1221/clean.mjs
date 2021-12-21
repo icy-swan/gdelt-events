@@ -15,7 +15,7 @@ function cleanupData(fileName) {
         .on('data', row => {
             const {YEAR,Actor2CountryCode,SOURCEURL, RecordCount } = row;
             // 没有就插入
-            if(!urls(SOURCEURL)) {
+            if(!urls[SOURCEURL]) {
                 urls[SOURCEURL] = [YEAR,Actor2CountryCode,SOURCEURL, RecordCount];
             } else {
                 // 重复就删除
