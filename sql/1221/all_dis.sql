@@ -7,7 +7,7 @@ SELECT DISTINCT
   -- EventCode,
   -- Actor1Code,
   -- Actor2Code,
-  GoldsteinScale,
+  -- GoldsteinScale,
   AvgTone,
   SOURCEURL,
   YEAR
@@ -355,7 +355,7 @@ SELECT DISTINCT
   -- EventCode,
   -- Actor1Code,
   -- Actor2Code,
-  GoldsteinScale,
+  -- GoldsteinScale,
   AvgTone,
   SOURCEURL,
   YEAR

@@ -1,12 +1,9 @@
-SELECT
+-- 首先查出所有中国与其他的，gs<0，at<0的所有内容
+SELECT DISTINCT
   GLOBALEVENTID,
   MonthYear,
   Actor1CountryCode,
   Actor2CountryCode,
-  QuadClass,
-  EventCode,
-  Actor1Code,
-  Actor2Code,
   GoldsteinScale,
   AvgTone,
   SOURCEURL,
@@ -346,15 +343,15 @@ AND EventCode IN (
         '172'
     )
 UNION ALL
-SELECT
+SELECT DISTINCT
   GLOBALEVENTID,
   MonthYear,
   Actor2CountryCode AS Actor1CountryCode,
   Actor1CountryCode AS Actor2CountryCode,
-  QuadClass,
-  EventCode,
-  Actor1Code,
-  Actor2Code,
+  -- QuadClass,
+  -- EventCode,
+  -- Actor1Code,
+  -- Actor2Code,
   GoldsteinScale,
   AvgTone,
   SOURCEURL,
@@ -693,3 +690,14 @@ AND EventCode IN (
         '1712',
         '172'
     )
+AS Root
+
+SELECT GLOBALEVENTID, SOURCEURL, Actor1CountryCode, Actor2CountryCode FROM Root AS Temp
+
+-- 从所有数据中找出与上述URL重复的URL，且GLOBALEVENTID不一致的内容
+SELECT DISTINCT GLOBALEVENTID, SOURCEURL, Actor1CountryCode, Actor2CountryCode
+FROM `gdelt-bq.full.events`
+WHERE SOURCEURL IN Temp.SOURCEURL AND GLOBALEVENTID NOT IN Temp.GLOBALEVENTID AS Dup
+
+-- 再去除dup的SOURCEURL的内容
+SELECT * FROM Root WHERE SOURCEURL NOT IN Dup.SOURCEURL
