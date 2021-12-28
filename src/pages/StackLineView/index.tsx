@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
-import originData from '../../config/originDataMerge';
+import originData from '../../config/originData';
 import countryData from '../../config/countryData';
 
 function getQueryString(name: string) {

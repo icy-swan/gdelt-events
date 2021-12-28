@@ -1,7 +1,6 @@
 import './style.less'
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
-import originData2021 from '../../config/originData2021'
 import originData from '../../config/originData'
 import countryData from '../../config/countryData';
 
@@ -13,7 +12,7 @@ export default () => {
         });
         var option;
         const lastData = originData[2020];
-        const targetData = originData2021[2021];
+        const targetData = originData[2021];
         // const lastData = originData[2019];
         // const targetData = originData[2020];
         var series = [];
@@ -31,8 +30,8 @@ export default () => {
                 const countryObj = targetData[countryCode];
                 if(countryObj && parseInt(countryObj.RecordCount) > 100 ) {
                     const curC = countryObj.RecordCount;
-                    const lastC = lastData[countryCode].RecordCount;
-                    const risk1 = (curC - lastC) / lastC;
+                    const lastC = (lastData[countryCode] && lastData[countryCode].RecordCount) || 0;
+                    const risk1 = lastC === 0 ? 0 : (curC - lastC) / lastC;
                     data.push([countryObj.RecordCount, risk1, countryName]);
                 }
             })

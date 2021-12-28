@@ -10,14 +10,17 @@ WITH query AS (
       WHEN Actor2CountryCode = 'CHN' THEN Actor1CountryCode
       ELSE Actor2CountryCode
     END AS Actor2CountryCode,
+    QuadClass,
+    EventCode,
     GoldsteinScale,
+    AvgTone,
     SOURCEURL,
     YEAR
   FROM
     `gdelt-bq.full.events`
   WHERE
     YEAR >= 2015
-    YEAR <= 2021
+    AND YEAR <= 2021
     AND GoldsteinScale < 0
     AND AvgTone < 0
     AND (
@@ -543,7 +546,7 @@ WHERE
           )
         WHERE
           YEAR >= 2015
-          YEAR <= 2021
+          AND YEAR <= 2021
         GROUP BY
           SOURCEURL
       ) AS T
