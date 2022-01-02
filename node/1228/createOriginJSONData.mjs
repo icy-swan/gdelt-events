@@ -5,7 +5,7 @@ import * as csv from 'fast-csv';
 const __dirname = path.resolve();
 
 const originData = {};//year-country-{count,gs}结构
-fs.createReadStream(path.resolve(__dirname, 'node', '1228', 'all.csv'))
+fs.createReadStream(path.resolve(__dirname, 'node', '1228', 'YEAR-COUNTRY-GS-RC-2015-2021.csv'))
     .pipe(csv.parse({ headers: true }))
     .on('error', error => console.error(error))
     .on('data', row => {
