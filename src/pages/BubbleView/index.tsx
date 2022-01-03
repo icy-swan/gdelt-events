@@ -4,17 +4,26 @@ import * as echarts from 'echarts'
 import originData from '../../config/originData'
 import countryData from '../../config/countryData';
 
+function getQueryString(name: string) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURIComponent(r[2]);
+    };
+    return null;
+}
+
 export default () => {
-    useEffect(()=> {
+    useEffect(() => {
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom, null, {
             renderer: 'svg'
         });
         var option;
-        const lastData = originData[2018];
-        const targetData = originData[2019];
-        // const lastData = originData[2019];
-        // const targetData = originData[2020];
+        const lastD = getQueryString('lastData');
+        const targetD = getQueryString('targetData');
+        const lastData = originData[lastD || 2020];
+        const targetData = originData[targetD || 2021];
         var series = [];
         var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '南美洲'];
 
@@ -26,9 +35,9 @@ export default () => {
             // const countryNames = Object.keys(countryData);
             const data = [];
             countryNames.forEach(c => {
-                const {countryName, countryCode} = c;
+                const { countryName, countryCode } = c;
                 const countryObj = targetData[countryCode];
-                if(countryObj && parseInt(countryObj.RecordCount) > 100 ) {
+                if (countryObj && parseInt(countryObj.RecordCount) > 100) {
                     const curC = countryObj.RecordCount;
                     const lastC = (lastData[countryCode] && lastData[countryCode].RecordCount) || 0;
                     const risk1 = lastC === 0 ? 0 : (curC - lastC) / lastC;
@@ -48,7 +57,7 @@ export default () => {
                 symbolSize: 30,
                 label: {
                     show: true,
-                    formatter: (params)=> {
+                    formatter: (params) => {
                         // debugger
                         return params.data[2]
                     },
