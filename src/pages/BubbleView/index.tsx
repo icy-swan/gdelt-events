@@ -11,8 +11,8 @@ export default () => {
             renderer: 'svg'
         });
         var option;
-        const lastData = originData[2020];
-        const targetData = originData[2021];
+        const lastData = originData[2018];
+        const targetData = originData[2019];
         // const lastData = originData[2019];
         // const targetData = originData[2020];
         var series = [];
