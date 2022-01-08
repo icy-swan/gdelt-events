@@ -1,8 +1,40 @@
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
 import originData from '../../config/originData';
+import countryData from '../../config/countryData';
+
+const {region} = countryData;
+
+
+function getQueryString(name: string) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURIComponent(r[2]);
+    };
+    return null;
+}
 
 export default () => {
+    const type = getQueryString('type');
+    const coutryList = region[type];
+    if(!coutryList) {
+        console.error('参数不对');
+    }
+    const data = [];
+    const targetData = originData['2021'];
+    coutryList.forEach(c => {
+        const {countryCode:cc, countryName} = c;
+        const td = targetData[cc];
+        if(td) {
+            data.push({ value: td.RecordCount, name:  countryName})
+        }
+    })
+    data.sort((a, b)=> {
+        return b.value - a.value;
+    })
+
+
     let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#dd2727', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
     useEffect(() => {
         const chartDom = document.getElementById('main');
@@ -18,7 +50,8 @@ export default () => {
                     icon: 'rect',
                     textStyle: {
                         fontFamily: 'serif'
-                    }
+                    },
+                    show: false
                 },
                 toolbox: {
                     show: true,
@@ -31,9 +64,9 @@ export default () => {
                 },
                 series: [
                     {
-                        name: 'Nightingale Chart',
+                        name: type,
                         type: 'pie',
-                        radius: [50, 250],
+                        radius: [100, 400],
                         center: ['50%', '50%'],
                         roseType: 'area',
                         itemStyle: {
@@ -48,13 +81,10 @@ export default () => {
                             // textBorderColor: '#333',
                             // textBorderWidth: 1
                         },
-                        data: [
-                            { value: 4136, name: '合作沟通摩擦' },
-                            { value: 2632, name: '政局变更摩擦' },
-                            { value: 8631, name: '战争武装摩擦' },
-                            { value: 6749, name: '司法治安摩擦' },
-                            { value: 3209, name: '经济财产摩擦' },
-                        ]
+                        markPoint: {
+                            symbol: 'none',
+                        },
+                        data,
                     }
                 ]
             })
