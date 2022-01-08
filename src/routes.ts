@@ -18,6 +18,12 @@ export default [
     component: () => import('./pages/StackLineView')
   },
   {
+    path: '/stackBarView',
+    name: 'demoPage1',
+    exact: true,
+    component: () => import('./pages/StackBarView')
+  },
+  {
     path: '/stackLineBarView',
     name: 'demoPage1',
     exact: true,
