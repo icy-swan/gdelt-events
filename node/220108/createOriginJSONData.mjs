@@ -9,12 +9,15 @@ fs.createReadStream(path.resolve(__dirname, 'node', '220108', 'all.csv'))
     .pipe(csv.parse({ headers: true }))
     .on('error', error => console.error(error))
     .on('data', row => {
-        const {MonthYear,Actor2CountryCode: CountryCode, GoldsteinScale, RecordCount} = row;
+        const {MonthYear,Actor2CountryCode: CountryCode, SubEventType, RecordCount} = row;
         if(!originData[CountryCode]) {
             originData[CountryCode] = {};
         }
         let d = originData[CountryCode];
-        d[MonthYear] = RecordCount;
+        if(!d[MonthYear]) {
+            d[MonthYear] = {};
+        }
+        d[MonthYear][SubEventType] = RecordCount;
         originData[CountryCode] = d;
     })
     .on('end', (rowCount) => {
