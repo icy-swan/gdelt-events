@@ -68,6 +68,15 @@ export default () => {
                     type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
                   }
                 },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        saveAsImage: {
+                            show: true,
+                            name: type,
+                        }
+                    }
+                },
                 legend: {},
                 grid: {
                   left: '3%',
