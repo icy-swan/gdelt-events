@@ -22,6 +22,29 @@ const targetRegionCountry = {
         'FRA',
         'ITA',
     ],
+    '亚洲': [
+        'PHL',
+        'PAK',
+        'JPN',
+        'IND',
+        'MMR',
+        'PRK',
+        'MYS',
+        'AFG',
+        'VNM',
+        'LKA',
+        'NPL',
+        'BRN',
+        'KOR',
+        'THA',
+        'IRQ',
+        'IDN',
+        'IRN',
+    ],
+    '南美洲' : ['BRA'],
+    '非洲': ['NGA'],
+    '大洋洲': ['AUS'],
+    '北美洲': ['USA', 'CAN'],
 }
 
 export default () => {
@@ -256,6 +279,7 @@ export default () => {
                 const cData = yearData[code] || {};
                 data.push(cData.RecordCount || 0);
             }
+            countryNames.push(countryName);
             series.unshift({
                 name: countryName,
                 type: 'line',
@@ -284,7 +308,8 @@ export default () => {
             })
             elseData.push(t);
         }
-        if(elseData.length > 0) {
+        if (elseData.length > 0) {
+            countryNames.push('其他');
             series.unshift({
                 name: '其他',
                 type: 'line',
@@ -314,7 +339,7 @@ export default () => {
                     left: 'right',
                     top: 'center',
                     feature: {
-                        saveAsImage: { show: true }
+                        saveAsImage: { show: true, name: getQueryString('region') || getQueryString('type'), }
                     }
                 },
                 tooltip: {
@@ -325,6 +350,10 @@ export default () => {
                 },
                 legend: {
                     data: countryNames,
+                    icon: 'rect',
+                    orient: 'vertical',
+                    align: 'left',
+                    right: 0,
                 },
                 xAxis: [
                     {
