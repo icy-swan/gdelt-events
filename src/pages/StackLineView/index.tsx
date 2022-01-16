@@ -12,6 +12,18 @@ function getQueryString(name: string) {
     return null;
 }
 
+const targetRegionCountry = {
+    '欧洲': [
+        'GBR',
+        'RUS',
+        'LTU',
+        'DEU',
+        'HUN',
+        'FRA',
+        'ITA',
+    ],
+}
+
 export default () => {
     let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#dd2727', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
     let yName = '风险量';
@@ -220,6 +232,70 @@ export default () => {
         series.push(s1);
         series.push(s2);
         series.push(s3);
+    } else if ('region' === type) {
+        const reg = getQueryString('region');
+        const regC = typeCountryData[reg];
+        const tarRegC = targetRegionCountry[reg];
+        function getCountryByCode(code) {
+            let temp = null;
+            regC.every(c => {
+                if (c.countryCode === code) {
+                    temp = c;
+                    return false;
+                }
+                return true;
+            })
+            return temp;
+        }
+        tarRegC.forEach(code => {
+            const country = getCountryByCode(code);
+            const { countryName } = country;
+            const data = [];
+            for (let year = 2016; year <= 2021; year++) {
+                const yearData = originData[`${year}`];
+                const cData = yearData[code] || {};
+                data.push(cData.RecordCount || 0);
+            }
+            series.unshift({
+                name: countryName,
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data,
+            });
+        })
+        let elseCountryCode = [];
+        regC.forEach(c => {
+            const { countryCode } = c;
+            if (tarRegC.indexOf(countryCode) === -1) {
+                elseCountryCode.push(countryCode);
+            }
+        })
+        let elseData = [];
+        for (let year = 2016; year <= 2021; year++) {
+            const yearData = originData[`${year}`];
+            let t = 0;
+            elseCountryCode.forEach(c => {
+                const cData = yearData[c] || {};
+                t += (cData.RecordCount || 0);
+            })
+            elseData.push(t);
+        }
+        if(elseData.length > 0) {
+            series.unshift({
+                name: '其他',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: elseData,
+            });
+        }
     }
 
 
