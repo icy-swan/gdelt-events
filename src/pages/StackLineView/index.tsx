@@ -48,7 +48,7 @@ const targetRegionCountry = {
 }
 
 export default () => {
-    let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#dd2727', '#34495E', '#E74C3C', '#8E44AD', '#7F8C8D'];
+    let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#2a4073', '#007bbb', '#4c6473', '#005243', '#839b5c', '#474b42', '#f8b500', '#e45e32', '#762f07', '#cb8347', '#e0815e', '#f1bf99', '#b7282e', '#e4ab9b'];
     let yName = '风险量';
     //处理数据
     const type = getQueryString('type');
