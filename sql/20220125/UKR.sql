@@ -1,5 +1,5 @@
 SELECT
-    count(*),
+    count(*) AS TotalCount,
     -- GLOBALEVENTID,
     -- MonthYear,
     -- CASE
@@ -17,8 +17,9 @@ FROM
     `gdelt-bq.full.events`
 WHERE
     YEAR >= 2012
+    AND YEAR < 2022
     AND GoldsteinScale < 0
-    AND AvgTone < 0
+    -- AND AvgTone < 0
     AND (
         (
             Actor1CountryCode = 'RUS'
@@ -31,4 +32,3 @@ WHERE
     )
 GROUP BY YEAR
 ORDER BY YEAR ASC
---     MonthYear DESC
