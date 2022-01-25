@@ -35,4 +35,10 @@ export default [
     exact: true,
     component: () => import('./pages/RoseView')
   },
+  {
+    path: '/barView',
+    name: 'demoPage1',
+    exact: true,
+    component: () => import('./pages/BarView')
+  },
 ]
