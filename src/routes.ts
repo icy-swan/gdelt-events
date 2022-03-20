@@ -41,4 +41,10 @@ export default [
     exact: true,
     component: () => import('./pages/BarView')
   },
+  {
+    path: '/lineView',
+    name: 'demoPage1',
+    exact: true,
+    component: () => import('./pages/LineView')
+  },
 ]

@@ -61,7 +61,7 @@ export default () => {
                     feature: {
                         saveAsImage: {
                             show: true,
-                            name: '乌克兰风险量',
+                            name: '乌克兰风险量同比',
                         }
                     }
                 },
@@ -75,38 +75,39 @@ export default () => {
                     containLabel: true,
                 },
                 yAxis: [
-                    {
-                        type: 'value',
-                        name: '风险量',
-                        // nameLocation: 'center',
-                        nameTextStyle: {
-                            fontFamily: 'serif',
-                            color: '#333',
-                            fontSize: 16,
-                        },
-                        // min: -30000,
-                        axisLabel: {
-                            fontFamily: 'Times New Roman, Times, serif',
-                            color: '#333',
-                            fontSize: 16,
-                        }
-                    },
                     // {
                     //     type: 'value',
-                    //     name: '变化率%',
+                    //     name: '风险量',
                     //     // nameLocation: 'center',
-                    //     min: -100,
                     //     nameTextStyle: {
                     //         fontFamily: 'serif',
                     //         color: '#333',
                     //         fontSize: 16,
                     //     },
+                    //     // min: -30000,
                     //     axisLabel: {
                     //         fontFamily: 'Times New Roman, Times, serif',
                     //         color: '#333',
                     //         fontSize: 16,
                     //     }
-                    // }
+                    // },
+                    {
+                        type: 'value',
+                        name: '风险量同比',
+                        // nameLocation: 'center',
+                        min: -100,
+                        nameTextStyle: {
+                            fontFamily: 'serif',
+                            color: '#333',
+                            fontSize: 16,
+                        },
+                        axisLabel: {
+                            fontFamily: 'Times New Roman, Times, serif',
+                            color: '#333',
+                            fontSize: 16,
+                            formatter: '{value}%'
+                        }
+                    }
                 ],
                 xAxis: {
                     type: 'category',
@@ -118,17 +119,16 @@ export default () => {
                     data: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
                 },
                 series: [
-                    {
-                        name: '俄乌风险总量',
-                        data,
-                        type: 'bar',
-                    },
                     // {
-                    //     name: '同比',
-                    //     data: tbData,
-                    //     type: 'line',
-                    //     yAxisIndex: 1,
+                    //     name: '俄乌风险总量',
+                    //     data,
+                    //     type: 'bar',
                     // },
+                    {
+                        name: '俄乌风险量同比',
+                        data: tbData,
+                        type: 'line',
+                    },
                 ]
             })
         );
