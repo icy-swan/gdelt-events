@@ -65,3 +65,5 @@ function quick(arr) {
   return quick(left).concat([pivote], quick(right));
 }
 console.log(quick(randomArr));
+
+// 归并，拆违n个2数组，排序，222组合排序
