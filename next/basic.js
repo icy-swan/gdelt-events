@@ -22,7 +22,6 @@ function bird(bName) {
 }
 
 // ownProperty & prototype
-
 function snake(sName) {
 		this.sName = sName;
     animal.call(this, 'snake');
@@ -122,6 +121,8 @@ const o1 = {
 }
 // o1.a
 // async
+// 宏任务微任务
+// asyc 和 promise一样
 async function async1() {
     console.log('async1 start'); // second
     await async2(); // third
@@ -147,10 +148,6 @@ new Promise((resolve, reject)=> {
     throw new Error('e0');// no response
 }).then(()=> {
     console.log('promise2'); // 7th
-    setTimeout(()=> {
-        throw new Error('e1');// no response
-    }, 0)
-    throw new Error('e2');
 }).catch(e=> {
     console.log(e);
 })
