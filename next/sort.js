@@ -67,3 +67,4 @@ function quick(arr) {
 console.log(quick(randomArr));
 
 // 归并，拆违n个2数组，排序，222组合排序
+// 数组内存连续省空间，填删涉及地址移动；链表可以不连续，插删容易
