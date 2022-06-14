@@ -184,6 +184,8 @@ WHERE
         WHERE
             A.Actor1CountryCode IN UNNEST(T.AC_agg)
             AND A.Actor2CountryCode IN UNNEST(T.AC_agg)
-            AND ARRAY_LENGTH(AC_agg) <= 2
+            AND ARRAY_LENGTH(AC_agg) <= 2 -- 意在去除第三国的情况
             AND A.SOURCEURL = T.SOURCEURL
     )
+
+--- 发现问题，去重测试结果出现sourceURL重复
