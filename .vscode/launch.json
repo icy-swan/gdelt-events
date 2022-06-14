@@ -30,7 +30,7 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${file}",
-            "runtimeExecutable": "/Users/ianli/.nvm/versions/node/v17.3.0/bin/node"
+            "runtimeExecutable": "/Users/ianli/.nvm/versions/node/v16.5.0/bin/node"
         }
     ]
 }

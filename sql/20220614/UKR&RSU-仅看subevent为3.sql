@@ -13,6 +13,7 @@ WITH query AS (
         END AS Actor2CountryCode,
         3 AS SubEventType,
         GoldsteinScale,
+        YEAR,
         SOURCEURL,
     FROM
         `gdelt-bq.full.events`
