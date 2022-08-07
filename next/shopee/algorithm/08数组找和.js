@@ -1,16 +1,12 @@
 const ca = [10, 1, 2, 7, 6, 1, 5],
   tar = 8;
 const getCombin = (ca = [], tar = 0) => {
-  const savedMap = new Map();
   var res = [];
   ca = ca.sort((a, b) => a - b);
   function searchTree(i, sum, ans) {
     if (sum > tar) return;
     if (sum == tar) {
-      if(!savedMap.has(ans)) {
         res.push([...ans]);
-      }
-      savedMap.set(ans, true);
     }
     for (i; i < ca.length; i++) {
       sum += ca[i];
@@ -18,7 +14,7 @@ const getCombin = (ca = [], tar = 0) => {
       searchTree(i + 1, sum, ans);
       sum -= ca[i];
       ans.pop();
-    //   while (ca[i + 1] == ca[i]) i++;
+      // while (ca[i + 1] == ca[i]) i++;
     }
   }
   searchTree(0, 0, []);
