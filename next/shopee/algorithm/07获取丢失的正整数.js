@@ -1,4 +1,4 @@
-const nums = [3, 4, -1, 1];
+const nums = [3, 4, -1, 1, 4, 1];
 const getMiss = (nums) => {
     for(let n of nums) {
         if(typeof nums[+n - 1] !== 'undefined') {//将整数对应位置设置为字符串
@@ -13,3 +13,17 @@ const getMiss = (nums) => {
     return nums.length + 1;
 }
 console.log(getMiss(nums));
+const findDuplicate = (nums) => {
+    let newArr = Array.from(nums);
+    for(let n of newArr) {
+        const cur = newArr[+n - 1];
+        const curType = typeof cur
+        if(curType === 'string') {
+            return newArr[n];
+        } else {
+            cur = '' + cur;
+        }
+    }
+    return -1;
+}
+console.log(findDuplicate(nums))
