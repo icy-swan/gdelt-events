@@ -17,8 +17,8 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    YEAR >= 2003
-    AND YEAR <= 2020
+    YEAR >= 2021
+    AND YEAR <= 2022
     AND GoldsteinScale < 0
     -- AND AvgTone < 0
     AND (
@@ -392,8 +392,8 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    YEAR >= 2003
-    AND YEAR <= 2020
+    YEAR >= 2021
+    AND YEAR <= 2022
     AND GoldsteinScale < 0
     -- AND AvgTone < 0
     AND (
@@ -784,8 +784,8 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    YEAR >= 2003
-    AND YEAR <= 2020
+    YEAR >= 2021
+    AND YEAR <= 2022
     AND GoldsteinScale < 0
     -- AND AvgTone < 0
     AND (
@@ -1174,8 +1174,8 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    YEAR >= 2003
-    AND YEAR <= 2020
+    YEAR >= 2021
+    AND YEAR <= 2022
     AND GoldsteinScale < 0
     -- AND AvgTone < 0
     AND (
@@ -1549,8 +1549,8 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    YEAR >= 2003
-    AND YEAR <= 2020
+    YEAR >= 2021
+    AND YEAR <= 2022
     AND GoldsteinScale < 0
     -- AND AvgTone < 0
     AND (
