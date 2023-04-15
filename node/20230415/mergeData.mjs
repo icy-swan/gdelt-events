@@ -1,19 +1,24 @@
+/**
+ * 原文件放到origin目录内
+ * 生成的文件，在output目录内，文件名会增加”merge_"的前缀
+ * 每次运行会自动删除旧内容生成新内容
+ */
 import * as fs from "fs";
 import * as path from "path";
 import * as csv from "fast-csv";
 
 const __dirname = path.resolve();
 
+// 原始文件名复制到引号内
 const fileName = "ICIO2021_2018";
+// 合并后的列的后缀（国家_后缀）
 const mergeName = "ALICE99";
-const mergeTextArr = ["05T06", "19"];
+// 需要进行合并的列的后缀，可以增加更多或替换
+const mergeTextArr = ["05T06", "19";
 
 const mergeSet = new Set(mergeTextArr);
 const mergeDataMap = new Map();
 const mergeDataCol = new Map();
-// {
-//     'aus': 0,
-// }
 const header = [];
 const rows = [];
 // 缓存原始的列头
