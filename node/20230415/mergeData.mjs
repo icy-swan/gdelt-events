@@ -87,51 +87,53 @@ function createHeader(row) {
         debugger;
       }
     }
-    console.log('❌Fail the test of count');
+    console.log('❎FAIL the test of count');
   } else {
     console.log('🎉PASS the test of count');
   }
 }
 function createData(row) {
-  const finalRow = [];
   const [dataType] = row;
-  const [country, code] = dataType;
-  // 理论上不存在
-  if(!country || !code) {
-    debugger
-    return;
-  }
+  const [country, code] = dataType.split('_');
+  const finalRow = [dataType];
+  const mergeRowDataMap = new Map();
   // 所有行，先处理列的合并
   row.forEach((v, i)=> {
+    // 第一个数是名称
+    if(i == 0) {
+      return;
+    }
+    const value = parseFloat(v);
     // 获取当前列，列的国家和code
     const [curCountry, curCode] = originHeader[i].split('_');
     // 如果code需要被合并
     if(mergeSet.has(curCode)) {
-      const curMergeDataMap = mergeDataMap.get(curCountry);
+      const curMergeDataMap = mergeRowDataMap.get(curCountry);
       // 第一个写入的，初始化
       if(!curMergeDataMap) {
-        mergeDataMap.set(curCountry, {
+        mergeRowDataMap.set(curCountry, {
           count: 1,
-          total: v,
+          total: value,
         })
       } else {
         // 更新缓存
-        mergeDataMap.set(curCountry, {
+        const nextDataRow = {
           count: curMergeDataMap.count + 1,
-          total: curMergeDataMap.total + v,
-        })
+          total: curMergeDataMap.total + value,
+        };
+        mergeRowDataMap.set(curCountry, nextDataRow)
         // 如果处理到最后一位，进行填写
-        if(mergeDataMap.get(curCountry).count === mergeSet.size) {
-          finalRow.push(curMergeDataMap.total);
+        if(nextDataRow.count === mergeSet.size) {
+          finalRow.push(nextDataRow.total);
         }
       }
     } else {
-      finalRow.push(v)
+      finalRow.push(value)
     }
   });
   // 再判断当前行是否是待处理的行
   // 进行行存储或合并
-  if(mergeSet.has(code)) {
+  if(code && mergeSet.has(code)) {
     const curMergeDataCol = mergeDataCol.get(country);
     if(!curMergeDataCol) {
       mergeDataCol.set(country, {
@@ -141,22 +143,35 @@ function createData(row) {
     } else {
       const nextData = Array.from(curMergeDataCol.data);
       nextData.push(finalRow);
-      mergeDataCol.set(country, {
-        count: curMergeDataCol +1,
+      const nextMergeData = {
+        count: curMergeDataCol.count +1,
         data: nextData,
-      })
+      };
+      mergeDataCol.set(country, nextMergeData)
       // 如果处理到最后一位，进行填写
-      if(mergeDataCol.get(country).count === mergeSet.size) {
+      if(nextMergeData.count === mergeSet.size) {
         // 进行行合并
         const mergedRow = nextData.reduce((pre, next)=> {
           return pre.map((v, i) => {
-            return v + next[i];
+            if(i === 0) {
+              return [country, mergeName].join('_');
+            } else {
+              return v + next[i];
+            }
           })
         })
-        finalRow.push(mergedRow);
+        if(mergedRow.length !== header.length) {
+          console.log('❎FAIL the row test of count');
+          debugger
+        }
+        rows.push(mergedRow);
       }
     }
   } else {
+    if(finalRow.length !== header.length) {
+      console.log('❎FAIL the row test of count');
+      debugger
+    }
     rows.push(finalRow);
   }
 }
@@ -177,7 +192,13 @@ fs.createReadStream(
   })
   .on("end", (rowCount) => {
     const end = new Date().getTime();
-    rows.push(header);
+    const rowsCount = rows.length;
+    if(rowsCount !== (rowCount - allCountry.size - 1)) {
+      console.log('❎FAIL the col test of count');
+    } else {
+      console.log('🎉PASS the col test of count');
+    }
+
     csv
       .writeToPath(
         path.resolve(
@@ -187,15 +208,16 @@ fs.createReadStream(
           "output",
           `merged-${fileName}.csv`
         ),
-        rows
+        rows, {
+          headers: header,
+          writeHeaders: true
+        }
       )
       .on("error", (err) => console.error(err))
       .on("finish", () => {
         const usedTime = (end - start) / 1000;
         console.log(
-          `finished ${1/3} with ${rowCount} rowCount, use ${usedTime.toFixed(
-            3
-          )} s, Done writing.`
+          `finished ${1}/${3}, merge ${rowCount} to ${rowsCount}, use ${usedTime.toFixed(3)}s, Done writing.`
         );
       });
   });
