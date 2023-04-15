@@ -19,12 +19,97 @@ const mergeDataMap = new Map();
 // }
 const header = [];
 const rows = [];
-
+// 缓存原始的列头
+let originHeader;
 // 缓存所以国家，用于校验
 const allCountry = new Set();
+// 统计耗时
+const start = new Date().getTime();
 
 let initHeader = false;
-const start = new Date().getTime();
+function createHeader(row) {
+  row.forEach((v, i) => {
+    if (v === "" || v === "") {
+      return header.push(v);
+    }
+    const [country, code] = v.split("_");
+    // 处理total
+    if (!country || !code) {
+      header.push(v);
+      return;
+    }
+    allCountry.add(country);
+    // 如果是待merge
+    if (mergeSet.has(code)) {
+      // 找到当前待merge的map
+      const curMergeDataMap = mergeDataMap.get(country);
+      if (curMergeDataMap) {
+        // 写入新的index，更新count
+        curMergeDataMap[code] = i;
+        curMergeDataMap.count = curMergeDataMap.count + 1;
+        mergeDataMap.set(country, curMergeDataMap);
+        // 如果最后一个待merge的index也找到，写入
+        if (curMergeDataMap.count === mergeSet.size) {
+          header.push([country, mergeName].join("_"));
+        }
+      } else {
+        const initData = {
+          count: 1,
+        };
+        initData[code] = i;
+        mergeDataMap.set(country, initData);
+      }
+    } else {
+      header.push(v);
+    }
+  });
+  // 验证逻辑
+  console.log("header len: ", header.length);
+  console.log("country size: ", allCountry.size);
+  console.log("row length: ", row.length);
+  if (header.length !== row.length - allCountry.size) {
+    const diffRowToHeader = [];
+    for (let key in row) {
+      const val = row[key];
+      if (!header.includes(val)) {
+        diffRowToHeader.push(val);
+        const [c] = val.split("_");
+        // 如果row内的值在不header，不是组合新名字，不是total，看下情况
+        if (!header.includes([c, mergeName].join("_")) && val !== "TOTAL") {
+          debugger;
+        }
+      }
+    }
+    const diffHeaderToRow = [];
+    for (let key in header) {
+      const val = header[key];
+      if (!row.includes(val)) {
+        diffHeaderToRow.push(val);
+      }
+    }
+    for (let key in diffHeaderToRow) {
+      const val = diffHeaderToRow[key];
+      const [con, code] = val.split("_");
+      // 如果header相对于row的新增内容的国家，不在国家列表内
+      if (!allCountry.has(con) || code !== mergeName) {
+        debugger;
+      }
+    }
+    console.log('❌Fail the test of count');
+  } else {
+    console.log('🎉PASS the test of count');
+  }
+}
+function createData(row) {
+  const [dataType] = row;
+  const [country, code] = dataType;
+  // 理论上不存在
+  if(!country || !code) {
+    debugger
+    return;
+  }
+  const curMergeDataMap = mergeDataMap.get(country);
+}
 fs.createReadStream(
   path.resolve(__dirname, "node", "20230415", "origin", `${fileName}.csv`)
 )
@@ -32,75 +117,11 @@ fs.createReadStream(
   .on("error", (error) => console.error(error))
   .on("data", (row) => {
     if (initHeader === false) {
-      row.forEach((v, i) => {
-        if (v === "" || v === "") {
-          return header.push(v);
-        }
-        const [country, code] = v.split("_");
-        // 处理total
-        if (!country || !code) {
-          header.push(v);
-          return;
-        }
-        allCountry.add(country);
-        // 如果是待merge
-        if (mergeSet.has(code)) {
-          // 找到当前待merge的map
-          const curMergeDataMap = mergeDataMap.get(country);
-          if (curMergeDataMap) {
-            // 写入新的index，更新count
-            curMergeDataMap[code] = i;
-            curMergeDataMap.count = curMergeDataMap.count + 1;
-            mergeDataMap.set(country, curMergeDataMap);
-            // 如果最后一个待merge的index也找到，写入
-            if (curMergeDataMap.count === mergeSet.size) {
-              header.push([country, mergeName].join("_"));
-            }
-          } else {
-            const initData = {
-              count: 1,
-            };
-            initData[code] = i;
-            mergeDataMap.set(country, initData);
-          }
-        } else {
-          header.push(v);
-        }
-      });
-      // 验证逻辑
-      console.log("header len: ", header.length);
-      console.log("country size: ", allCountry.size);
-      console.log("row length: ", row.length);
-      if (header.length !== row.length - allCountry.size) {
-        const diffRowToHeader = [];
-        for (let key in row) {
-          const val = row[key];
-          if (!header.includes(val)) {
-            diffRowToHeader.push(val);
-            const [c] = val.split("_");
-            // 如果row内的值在不header，不是组合新名字，不是total，看下情况
-            if (!header.includes([c, mergeName].join("_")) && val !== "TOTAL") {
-              debugger;
-            }
-          }
-        }
-        const diffHeaderToRow = [];
-        for (let key in header) {
-          const val = header[key];
-          if (!row.includes(val)) {
-            diffHeaderToRow.push(val);
-          }
-        }
-        for (let key in diffHeaderToRow) {
-          const val = diffHeaderToRow[key];
-          const [con, code] = val.split("_");
-          // 如果header相对于row的新增内容的国家，不在国家列表内
-          if (!allCountry.has(con) || code !== mergeName) {
-            debugger;
-          }
-        }
-      }
+      createHeader(row);
+      originHeader = row;
       initHeader = true;
+    } else {
+      createData(row);
     }
   })
   .on("end", (rowCount) => {
@@ -118,9 +139,12 @@ fs.createReadStream(
         rows
       )
       .on("error", (err) => console.error(err))
-      .on("finish", () =>
+      .on("finish", () => {
+        const usedTime = (end - start) / 1000;
         console.log(
-          `finished ${rowCount} rowCount, use ${end - start} ms, Done writing.`
-        )
-      );
+          `finished ${1/3} with ${rowCount} rowCount, use ${usedTime.toFixed(
+            3
+          )} s, Done writing.`
+        );
+      });
   });
