@@ -10,12 +10,9 @@ const mergeTextArr = ["05T06", "19"];
 
 const mergeSet = new Set(mergeTextArr);
 const mergeDataMap = new Map();
+const mergeDataCol = new Map();
 // {
-//     'aus': {
-//         '05T06': 3,
-//         '19': 4,
-//         mergeIndex: 5,
-//     }
+//     'aus': 0,
 // }
 const header = [];
 const rows = [];
@@ -42,22 +39,17 @@ function createHeader(row) {
     // 如果是待merge
     if (mergeSet.has(code)) {
       // 找到当前待merge的map
-      const curMergeDataMap = mergeDataMap.get(country);
+      let curMergeDataMap = mergeDataMap.get(country);
       if (curMergeDataMap) {
         // 写入新的index，更新count
-        curMergeDataMap[code] = i;
-        curMergeDataMap.count = curMergeDataMap.count + 1;
+        curMergeDataMap = curMergeDataMap + 1;
         mergeDataMap.set(country, curMergeDataMap);
         // 如果最后一个待merge的index也找到，写入
-        if (curMergeDataMap.count === mergeSet.size) {
+        if (curMergeDataMap === mergeSet.size) {
           header.push([country, mergeName].join("_"));
         }
       } else {
-        const initData = {
-          count: 1,
-        };
-        initData[code] = i;
-        mergeDataMap.set(country, initData);
+        mergeDataMap.set(country, 1);
       }
     } else {
       header.push(v);
@@ -101,6 +93,7 @@ function createHeader(row) {
   }
 }
 function createData(row) {
+  const finalRow = [];
   const [dataType] = row;
   const [country, code] = dataType;
   // 理论上不存在
@@ -108,7 +101,64 @@ function createData(row) {
     debugger
     return;
   }
-  const curMergeDataMap = mergeDataMap.get(country);
+  // 所有行，先处理列的合并
+  row.forEach((v, i)=> {
+    // 获取当前列，列的国家和code
+    const [curCountry, curCode] = originHeader[i].split('_');
+    // 如果code需要被合并
+    if(mergeSet.has(curCode)) {
+      const curMergeDataMap = mergeDataMap.get(curCountry);
+      // 第一个写入的，初始化
+      if(!curMergeDataMap) {
+        mergeDataMap.set(curCountry, {
+          count: 1,
+          total: v,
+        })
+      } else {
+        // 更新缓存
+        mergeDataMap.set(curCountry, {
+          count: curMergeDataMap.count + 1,
+          total: curMergeDataMap.total + v,
+        })
+        // 如果处理到最后一位，进行填写
+        if(mergeDataMap.get(curCountry).count === mergeSet.size) {
+          finalRow.push(curMergeDataMap.total);
+        }
+      }
+    } else {
+      finalRow.push(v)
+    }
+  });
+  // 再判断当前行是否是待处理的行
+  // 进行行存储或合并
+  if(mergeSet.has(code)) {
+    const curMergeDataCol = mergeDataCol.get(country);
+    if(!curMergeDataCol) {
+      mergeDataCol.set(country, {
+        count: 1,
+        data: [finalRow]
+      });
+    } else {
+      const nextData = Array.from(curMergeDataCol.data);
+      nextData.push(finalRow);
+      mergeDataCol.set(country, {
+        count: curMergeDataCol +1,
+        data: nextData,
+      })
+      // 如果处理到最后一位，进行填写
+      if(mergeDataCol.get(country).count === mergeSet.size) {
+        // 进行行合并
+        const mergedRow = nextData.reduce((pre, next)=> {
+          return pre.map((v, i) => {
+            return v + next[i];
+          })
+        })
+        finalRow.push(mergedRow);
+      }
+    }
+  } else {
+    rows.push(finalRow);
+  }
 }
 fs.createReadStream(
   path.resolve(__dirname, "node", "20230415", "origin", `${fileName}.csv`)
@@ -120,6 +170,7 @@ fs.createReadStream(
       createHeader(row);
       originHeader = row;
       initHeader = true;
+      mergeDataMap.clear();
     } else {
       createData(row);
     }
