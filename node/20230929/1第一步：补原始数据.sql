@@ -17,7 +17,7 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    MonthYear >= 202209
+    MonthYear >= 202101
 --    AND YEAR <= 2022
 AND MonthYear <= 202309
     AND GoldsteinScale < 0
@@ -393,7 +393,7 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    MonthYear >= 202209
+    MonthYear >= 202101
 --    AND YEAR <= 2022
 AND MonthYear <= 202309
     AND GoldsteinScale < 0
@@ -786,7 +786,7 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    MonthYear >= 202209
+    MonthYear >= 202101
 --    AND YEAR <= 2022
 AND MonthYear <= 202309
     AND GoldsteinScale < 0
@@ -1177,7 +1177,7 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    MonthYear >= 202209
+    MonthYear >= 202101
 --    AND YEAR <= 2022
 AND MonthYear <= 202309
     AND GoldsteinScale < 0
@@ -1553,7 +1553,7 @@ SELECT
 FROM
     `gdelt-bq.full.events`
 WHERE
-    MonthYear >= 202209
+    MonthYear >= 202101
 --    AND YEAR <= 2022
 AND MonthYear <= 202309
     AND GoldsteinScale < 0

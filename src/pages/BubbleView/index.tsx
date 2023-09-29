@@ -1,3 +1,4 @@
+//http://localhost:3000/?lastData=2021&targetData=2022&countryLimit=30#/BubbleView
 import './style.less'
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
@@ -23,7 +24,26 @@ export default () => {
         const lastD = getQueryString('lastData');
         const targetD = getQueryString('targetData');
         const lastData = originData[lastD || 2020];
-        const targetData = originData[targetD || 2021];
+        const originTargetData = originData[targetD || 2021];
+        // 做下数据过滤，只看top N国家
+        let targetData = {};
+        const countryLimit = parseInt(getQueryString('countryLimit') || '');
+        if(!isNaN(countryLimit) && countryLimit > 0) {
+            const ct = [];
+            for(let key in originTargetData) {
+                ct.push(originTargetData[key]['RecordCount']);
+            }
+            ct.sort((a, b)=> b-a);
+            const resultCount = Array.from(ct.slice(0, countryLimit));
+            for(let key in originTargetData) {
+                const rc = originTargetData[key]['RecordCount'];
+                if(resultCount.includes(rc)) {
+                    targetData[key] = originTargetData[key];
+                }
+            }
+        } else {
+            targetData = originTargetData;
+        }
         var series = [];
         var regionsList = ['北美洲', '亚洲', '欧洲', '大洋洲', '非洲', '南美洲'];
 
@@ -108,7 +128,7 @@ export default () => {
                 },
                 xAxis: {
                     type: 'log',
-                    name: '风险量',
+                    name: '绝对量',
                     nameGap: 16,
                     nameTextStyle: {
                         fontSize: 16

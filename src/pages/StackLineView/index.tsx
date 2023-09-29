@@ -1,3 +1,4 @@
+//http://localhost:3000/?lastData=2021&targetData=2022&countryLimit=30&type=compareYDYL#/StackLineView
 import React, { useEffect } from 'react'
 import * as echarts from 'echarts'
 import originData from '../../config/originData';
@@ -49,24 +50,24 @@ const targetRegionCountry = {
 
 export default () => {
     let colors = ['#3498DB', '#E67E22', '#27AE60', '#9B59B6', '#F1C40F', '#2a4073', '#007bbb', '#4c6473', '#005243', '#839b5c', '#474b42', '#f8b500', '#e45e32', '#762f07', '#cb8347', '#e0815e', '#f1bf99', '#b7282e', '#e4ab9b'];
-    let yName = '风险量';
+    let yName = '绝对量';
     //处理数据
     const type = getQueryString('type');
     const typeCountryData = Object.assign({}, countryData[type]);
     const years = [];
-    for (let year = 2016; year <= 2021; year++) {
+    for (let year = 2016; year <= 2022; year++) {
         years.push(year + '');
     }
     let countryNames = [];
     let series = [];
     if ('isYDYL' === type) {
-        const dataForCheck = originData['2021'];
+        const dataForCheck = originData['2022'];
         typeCountryData.all.forEach(c => {
             const { countryName, countryCode } = c;
             if (dataForCheck[countryCode]) {
                 countryNames.push[countryName];
                 let data = [];
-                for (let year = 2016; year <= 2021; year++) {
+                for (let year = 2016; year <= 2022; year++) {
                     const yearData = originData[`${year}`];
                     const cData = yearData[countryCode] || {};
                     data.push(cData.RecordCount || 0);
@@ -113,7 +114,7 @@ export default () => {
             },
             data: []
         }
-        for (let year = 2016; year <= 2021; year++) {
+        for (let year = 2016; year <= 2022; year++) {
             const yearData = originData[`${year}`];
             let data1 = 0;
             let data2 = 0;
@@ -159,7 +160,7 @@ export default () => {
             },
             data: []
         }
-        for (let year = 2016; year <= 2021; year++) {
+        for (let year = 2016; year <= 2022; year++) {
             const yearData = originData[`${year}`];
             let data1 = 0;
             let data2 = 0;
@@ -187,7 +188,7 @@ export default () => {
         s2.data = t2;
         series.push(s1);
         series.push(s2);
-        yName = '风险量%';
+        yName = '绝对量%';
     } else if ('isSXD' === type) {
         countryNames = ['北美自贸区', '东盟', '欧盟'];
         const s1 = {
@@ -232,7 +233,7 @@ export default () => {
         const isDM = countryArrToObj(countryData.isDM.all);
         const isOM = countryArrToObj(countryData.isOM.all);
         const isBMZM = countryArrToObj(countryData.isBMZM.all);
-        for (let year = 2015; year <= 2020; year++) {
+        for (let year = 2015; year <= 2021; year++) {
             const yearData = originData[`${year}`];
             let data1 = 0;
             let data2 = 0;
@@ -274,7 +275,7 @@ export default () => {
             const country = getCountryByCode(code);
             const { countryName } = country;
             const data = [];
-            for (let year = 2016; year <= 2021; year++) {
+            for (let year = 2016; year <= 2022; year++) {
                 const yearData = originData[`${year}`];
                 const cData = yearData[code] || {};
                 data.push(cData.RecordCount || 0);
@@ -299,7 +300,7 @@ export default () => {
             }
         })
         let elseData = [];
-        for (let year = 2016; year <= 2021; year++) {
+        for (let year = 2016; year <= 2022; year++) {
             const yearData = originData[`${year}`];
             let t = 0;
             elseCountryCode.forEach(c => {
