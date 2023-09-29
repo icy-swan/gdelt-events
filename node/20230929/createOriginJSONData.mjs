@@ -9,7 +9,7 @@ fs.createReadStream(path.resolve(__dirname, 'node', '20230929', 'all.csv'))
     .pipe(csv.parse({ headers: true }))
     .on('error', error => console.error(error))
     .on('data', row => {
-        const {MonthYear,Actor2CountryCode: CountryCode, SubEventType, RecordCount} = row;
+        const {MonthYear,Actor2CountryCode: CountryCode, SubEventType, "Record Count": RecordCount} = row;
         if(!originData[CountryCode]) {
             originData[CountryCode] = {};
         }
