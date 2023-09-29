@@ -14,7 +14,7 @@ const fileName = "ICIO2021_2018";
 // 合并后的列的后缀（国家_后缀）
 const mergeName = "ALICE99";
 // 需要进行合并的列的后缀，可以增加更多或替换
-const mergeTextArr = ["05T06", "19";
+const mergeTextArr = ["05T06", "19"];
 
 const mergeSet = new Set(mergeTextArr);
 const mergeDataMap = new Map();
@@ -222,7 +222,7 @@ fs.createReadStream(
       .on("finish", () => {
         const usedTime = (end - start) / 1000;
         console.log(
-          `finished ${1}/${3}, merge ${rowCount} to ${rowsCount}, use ${usedTime.toFixed(3)}s, Done writing.`
+          `finished ${1}/${1}, merge ${rowCount} to ${rowsCount}, use ${usedTime.toFixed(3)}s, Done writing.`
         );
       });
   });
