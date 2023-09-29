@@ -30,6 +30,6 @@ fs.createReadStream(path.resolve(__dirname, 'node', '20230929', '2015-2023-åŸºç¡
                 console.log("An error occured while writing originData JSON Object to File.");
                 return console.log(err);
             }
-            console.log("originData JSON report has been saved.");
+            console.log("yearOriginData JSON report has been saved.");
         });
     });
