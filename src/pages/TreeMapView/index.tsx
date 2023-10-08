@@ -53,7 +53,7 @@ export default () => {
   const type = getQueryString('type');
   const typeCountryData = Object.assign({}, countryData[type]);
 
-  const measureData = originData['2021'];
+  const measureData = originData['2022'];
 
   if ('isYDYL' === type) {
     // 保持颜色对应
